@@ -1,0 +1,75 @@
+#divcss5{ margin:0px auto} 
+#divcss5 img{ border-radius:10%} 
+#Container{
+  	width:1000px;
+	margin:0 auto;
+}
+#Header{
+	height:200px;
+	background-image: url("images/3.png");
+}
+#logo{
+	padding-left:100px;
+	padding-top:80px;
+	padding-bottom:50px;
+}
+#line{
+	height: 35px;
+	background: RGB(0,210,0);
+}
+#Content{
+	overflow:auto;
+	margin-top:0px;
+	background-image: url("images/1.jpg");	   
+}
+#Content-Left{
+	height:600px;
+	width:300px;
+	margin:20px;
+	float:left;
+	border-radius:15px;
+	background:RGB(118,237,105);
+	
+}
+#Display-Picture{
+	border-radius:50%;
+}
+#Content-Main{
+	height:600px;
+	width:640px;
+	margin-top:5px;
+	margin-left:0px;
+	float:left;
+}
+#Content-Diary{
+	height:290px;
+	width:640px;
+	margin-top:0px;
+	margin-left:0px;
+	border-radius:15px;
+	background:RGB(118,237,105);
+}
+#Content-Homework{
+	height:290px;
+	width:640px;
+	margin-top:20px;
+	margin-left:0px;
+	border-radius:15px;
+	background:RGB(118,237,105);
+}
+#Footer{
+	height:40px;
+	background: RGB(0,210,0);
+	margin-top:20px;
+}
+.Clear{
+	clear:both;
+}
+#Diary{
+	widows: 900px;
+	height: 600px;
+	margin: 20px;
+	padding: 30px;
+	border-radius:15px;
+	background:RGB(118,237,105);
+}
