@@ -277,8 +277,8 @@
           title =data.images[temp].title;
           contents=data.images[temp].contents;
           height1=data.images[temp].height;
-          pic_latitude=images[temp].latitude;
-          pic_longitude=images[temp].longitude;
+          pic_latitude=data.images[temp].latitude;
+          pic_longitude=data.images[temp].longitude;
         });
         if (get_location == true) {
           var radLat1 = getRad(user_latitude);
@@ -371,16 +371,16 @@
       </span>
     </div> 
     <script>
-      navigator.geolocation.getCurrentPosition(
-        function(position){
-          get_location = true;
-          user_latitude = position.coords.latitude;
-          user_longitude = position.coords.longitude;
-        },
-        function(error){
-          get_location = false;
-        }
-      );
+      // navigator.geolocation.getCurrentPosition(
+      //   function(position){
+      //     get_location = true;
+      //     user_latitude = position.coords.latitude;
+      //     user_longitude = position.coords.longitude;
+      //   },
+      //   function(error){
+      //     get_location = false;
+      //   }
+      // );
 
       for (var i = 0; i < 30; i++) {
         addpic(i);
