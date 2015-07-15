@@ -294,9 +294,11 @@
         }
         var str = '<div class="grid doudong doudongxg" onclick=showPopup('+num_pic+') style="width: 174px; left: '+ chosen_column * 220 +'px; top: '+length[chosen_column] + 'px; position: absolute;"><div class="imgholder"><a ><img src="' + path +'"></a></div><strong>'+title+'</strong><p>'+contents+'</p>';
         if (get_location==true) {
-          str+='<div class="meta">距离你'+distance+'</div></div>';
+          distance = parseInt(distance / 1000);
+          str+='<div class="meta">距离你'+distance+'km</div></div>';
         }
         else if(get_location==false){
+          alert("1");
           str+='<div class="meta">未获取到地理位置</div></div>';
         }
         
@@ -377,15 +379,19 @@
           get_location = true;
           user_latitude = position.coords.latitude;
           user_longitude = position.coords.longitude;
+          for (var i = 0; i < 30; i++) {
+            addpic(i);
+          }
         },
         function(error){
           get_location = false;
+          for (var i = 0; i < 30; i++) {
+            addpic(i);
+          }
         }
       );
 
-      for (var i = 0; i < 30; i++) {
-        addpic(i);
-      }
+      
 
       var container_height = 0;
       for (var i = 0; i < 5; i++) {
