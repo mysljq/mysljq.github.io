@@ -272,7 +272,7 @@
           height1=data.images[temp].height;
         });
         
-        var str = '<div class="grid doudong doudongxg" style="width: 174px; left: '+ chosen_column * 220 +'px; top: '+length[chosen_column] + 'px; position: absolute;"><div class="imgholder"><a onclick=showPopup('+num_pic+')><img src="' + path +'"></a></div><strong>'+title+'</strong><p>'+contents+'</p><div class="meta">地理位置</div></div>';
+        var str = '<div class="grid doudong doudongxg" onclick=showPopup('+num_pic+') style="width: 174px; left: '+ chosen_column * 220 +'px; top: '+length[chosen_column] + 'px; position: absolute;"><div class="imgholder"><a ><img src="' + path +'"></a></div><strong>'+title+'</strong><p>'+contents+'</p><div class="meta">地理位置</div></div>';
         var picdiv1 = $(str);
         picdiv1.appendTo('#container');
 
