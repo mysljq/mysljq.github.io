@@ -185,13 +185,13 @@
 
           var pic_left,pic_top,pic_height,pic_width, temp;
           var elements = document.getElementsByTagName('img');
-          if (elements[showing_pic_num].naturalHeight > 600) {
+          if (elements[showing_pic_num+1].naturalHeight > 600) {
             pic_height = 600;
-            temp = elements[showing_pic_num].naturalHeight / 600;
-            pic_width = elements[showing_pic_num].naturalWidth / temp;
+            temp = elements[showing_pic_num+1].naturalHeight / 600;
+            pic_width = elements[showing_pic_num+1].naturalWidth / temp;
           }else{
-            pic_height = elements[showing_pic_num].naturalHeight;
-            pic_width = elements[showing_pic_num].naturalWidth;
+            pic_height = elements[showing_pic_num+1].naturalHeight;
+            pic_width = elements[showing_pic_num+1].naturalWidth;
           }
           if (pic_width > 800) {
             temp = pic_width / 800;
