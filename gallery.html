@@ -80,6 +80,11 @@
         z-index: 10000;
         position:fixed;
       } 
+
+      #loading{
+        position:fixed;
+        display:hidden;
+      }
       
       #container{
         position:relative;
@@ -161,7 +166,7 @@
         if (pop_is_showing == false) {
           pop_is_showing = true;
           var objDiv = document.getElementById("popDiv"); 
-          viewH =$(this).height()
+          viewH =$(this).height();
           viewW =$(this).width();
           var style_left = viewW/2 - 480;
           var style_top = viewH/2 - 300;
@@ -213,6 +218,15 @@
           objDiv.style.visibility = "hidden"; 
           pop_is_showing = false;
         }       
+      }
+
+      function showloading(){
+        var viewH =$(this).height();
+        var viewW =$(this).width();
+        var objLoading = document.getElementById("loading"); 
+        objLoading.style.top = viewH/2 -30 +'px';
+        objLoading.style.left = viewW/2 -62 +'px';
+        objLoading.style.display = 'block';
       }
 
       var commentsPage;
@@ -364,6 +378,9 @@
         </p>
       </div>
     </div>
+    <div id="loading">
+      <img src="img/loading.gif"/>
+    </div>
     <div id="container">
     </div>
     <div id="popDiv"> 
@@ -374,6 +391,7 @@
       </span>
     </div> 
     <script>
+      showloading();
       navigator.geolocation.getCurrentPosition(
         function(position){
           get_location = true;
@@ -382,12 +400,17 @@
           for (var i = 0; i < 30; i++) {
             addpic(i);
           }
+          var objLoading = document.getElementById("loading"); 
+          objLoading.style.display = 'none';
+          alert("1");
         },
         function(error){
           get_location = false;
           for (var i = 0; i < 30; i++) {
             addpic(i);
           }
+          var objLoading = document.getElementById("loading"); 
+          objLoading.style.display = 'none';
         }
       );
 
