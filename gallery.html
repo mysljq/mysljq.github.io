@@ -325,6 +325,10 @@
       }
 
       $(window).resize(function(){ 
+        if(document.getElementById("loading").style.display=='block'){
+          document.getElementById("loading").style.display = 'none';
+          showloading();
+        }          
         if($('#popDiv')[0].style.visibility == "visible"){
           hidePopup();
           showPopup(showing_pic_num);
