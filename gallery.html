@@ -371,16 +371,16 @@
       </span>
     </div> 
     <script>
-      // navigator.geolocation.getCurrentPosition(
-      //   function(position){
-      //     get_location = true;
-      //     user_latitude = position.coords.latitude;
-      //     user_longitude = position.coords.longitude;
-      //   },
-      //   function(error){
-      //     get_location = false;
-      //   }
-      // );
+      navigator.geolocation.getCurrentPosition(
+        function(position){
+          get_location = true;
+          user_latitude = position.coords.latitude;
+          user_longitude = position.coords.longitude;
+        },
+        function(error){
+          get_location = false;
+        }
+      );
 
       for (var i = 0; i < 30; i++) {
         addpic(i);
