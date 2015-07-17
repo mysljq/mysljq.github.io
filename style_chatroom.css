@@ -1,0 +1,125 @@
+.container {
+  margin: 40px auto 0px auto; 
+  position:fixed;
+  width: 920px;
+  height: 600px;
+}
+
+.usernamebox {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width: 300px;
+}
+
+.chatbox{
+  position:absolute;
+  top:0px;
+  right: 0px;
+  width: 600px;
+}
+
+body{
+  background-color: #dfc;
+}
+
+.chat {
+  font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  border-radius: 6px;
+  background-color: #dfb;
+  border: 1px solid #060;
+  overflow: auto;
+  padding: 0px;
+  font-size: 18px;
+  line-height: 22px;
+  color: #060; 
+}
+
+.chat header {
+  height:30px;
+  background-color: #060;
+  border-radius: 3px 3px 0px 0px;
+  line-height: 30px;
+  color:#7C2;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+}  
+
+.chat input {
+  border-radius: 3px;
+  padding: 0px 10px;
+  height: 30px;
+  font-size: 20px;
+  width: 100%;
+  color:#060;
+  outline: none; 
+}
+
+.chat .chat-toolbar {
+  background-color: #af8;
+  padding: 10px;
+  position: relative
+}
+
+label {
+  position: absolute;
+  top: 10px;
+  left: 17px;
+  line-height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #060;
+  z-index: 1; 
+}
+
+.chat-toolbar input {
+  border: 1px solid #af8;
+  padding-left: 100px;
+  background-color: #af8;
+}
+
+.chat footer input {
+  border: 1px solid #af8;
+  height: 40px; 
+  background-color: #af8;
+}
+
+
+.chatbox ul {
+  padding: 20px;
+  height: 400px;
+  list-style: none;
+  margin: 0px;
+  overflow: auto; 
+}
+
+.usernamebox ul{
+  padding: 20px;
+  list-style: none;
+  margin: 0px;
+  height: 409px;
+  overflow: auto; 
+  font-weight: bold;
+}
+
+.chat footer {
+  display: block;
+  padding: 10px; 
+}
+
+.chat ul li {
+  margin-bottom: 10px;
+  line-height: 20px; 
+}
+
+.chat ul .chat-username {
+  margin-right: 10px; 
+}
+
+.usernamebox li{
+  text-align: center;
+  border-bottom: 2px solid #060;
+  font-size: 20px;
+}
+

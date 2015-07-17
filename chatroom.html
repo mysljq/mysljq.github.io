@@ -1,0 +1,126 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style_chatroom.css">
+</head>
+<body>
+
+<!-- CHAT MARKUP -->
+<div class="container">
+  <div class="chat usernamebox">
+    <header>当前用户</header>
+
+    <div class='chat-toolbar'>
+      <label for="nameInput">当前昵称:</label>
+      <input type='text' id='nameInput' placeholder='在此输入昵称'>
+    </div>
+    <ul id='users' class="chat-messages"></ul>
+  </div>
+  <div class="chat chatbox">
+    <header>聊天窗口</header>
+
+    <ul id='messages' class="chat-messages"></ul>
+
+    <footer>
+      <input type='text' id='messageInput'  placeholder='输入聊天内容'>
+    </footer>
+  </div>
+
+</div>
+<script>
+  var messagesRef = new Firebase('https://myljqchatroom.firebaseio.com/');
+
+  //1表示第一次进入，0表示在房间中，-1表示退出房间
+  var inroom = 1;
+  //记录用户当前使用的用户名，方便判别用户是否修改了昵称
+  var currentusername;
+
+  var messageField = $('#messageInput');
+  var nameField = $('#nameInput');
+  var messageList = $('#messages');
+  var userList = $('#users');
+
+  //监听发送信息的事件
+  messageField.keypress(function (e) {
+    if (e.keyCode == 13) {
+      var username = nameField.val();
+      var message = messageField.val();
+      var userElement = $("#user_"+username);
+      //判断昵称是否重复
+      if (userElement[0] ==undefined || username == currentusername) {
+        if (message == ""){
+          alert("输入信息不能为空");
+        }else{
+          //如果用户刚进入房间
+          if (inroom == 1) {
+            currentusername = username;
+            messagesRef.push({name:currentusername, text:message, currentuser:inroom});
+            messageField.val('');
+            inroom = 0;
+          }
+          //如果用户已经在房间中
+          else if (inroom == 0) {
+            //已在房间内的用户修改用户名
+            if (username != currentusername) {
+              inroom = -1;
+              messagesRef.push({name:currentusername, text:message, currentuser:inroom});
+              inroom = 1;
+              currentusername = username;
+              messagesRef.push({name:username, text:message, currentuser:inroom});
+              messageField.val('');
+              inroom = 0;
+            }else{
+              messagesRef.push({name:username, text:message, currentuser:inroom});
+              messageField.val('');
+            }
+          }
+        }   
+      }else{
+        alert("重复的昵称，请重新输入");
+      }
+    }
+  });
+
+  window.onbeforeunload=function  ()  { 
+    var message = messageField.val();
+    inroom = -1;
+    messagesRef.push({name:currentusername, text:message, currentuser:inroom}); 
+  }
+
+  //显示聊天内容以及当前用户
+  messagesRef.on('child_added', function (snapshot) {
+    //从数据库获取数据
+    var data = snapshot.val();
+    var username = data.name || "anonymous";
+    var message = data.text;
+    //用户状态，1为进入，0为在房间内，-1为退出房间
+    var currentinroom = data.currentuser;
+
+
+    if (currentinroom == 0) {
+      var messageElement = $("<li>");
+      var nameElement = $("<strong class='chat-username'></strong>");
+      nameElement.text(username);
+      messageElement.text(message).prepend(nameElement);
+      messageList.append(messageElement);
+    }else if (currentinroom == 1){
+      var userElement = $("<li id='user_"+username+"'>");
+      var messageElement = $("<li>");
+      var nameElement = $("<strong class='chat-username'></strong>");
+      nameElement.text(username);
+      userElement.text(username);
+      messageElement.text(message).prepend(nameElement);
+      //ADD MESSAGE
+      messageList.append(messageElement);
+      userList.append(userElement);
+    }else{
+      var userElement = $("#user_"+username);
+      userElement.remove();
+    }
+    messageList[0].scrollTop = messageList[0].scrollHeight;
+  });
+</script>
+</body>
+</html>
