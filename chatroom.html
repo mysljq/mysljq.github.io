@@ -48,8 +48,8 @@
       var username = nameField.val();
       var message = messageField.val();
       var userElement = $("#user_"+username);
-      //判断昵称是否重复
-      if (userElement[0] ==undefined || username == currentusername) {
+      //判断昵称是否有误
+      if (username!=""&&(userElement[0] ==undefined || username == currentusername)) {
         if (message == ""){
           alert("输入信息不能为空");
         }else{
@@ -78,12 +78,12 @@
           }
         }   
       }else{
-        alert("重复的昵称，请重新输入");
+        alert("昵称有误，请重新输入");
       }
     }
   });
 
-  window.onbeforeunload=function  ()  { 
+  window.onbeforeunload=function () { 
     var message = messageField.val();
     inroom = -1;
     messagesRef.push({name:currentusername, text:message, currentuser:inroom}); 
@@ -93,7 +93,7 @@
   messagesRef.on('child_added', function (snapshot) {
     //从数据库获取数据
     var data = snapshot.val();
-    var username = data.name || "anonymous";
+    var username = data.name;
     var message = data.text;
     //用户状态，1为进入，0为在房间内，-1为退出房间
     var currentinroom = data.currentuser;
