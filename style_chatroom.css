@@ -56,7 +56,7 @@ body{
   outline: none; 
 }
 
-.chat .chat-toolbar {
+.chat .chat-username {
   background-color: #af8;
   padding: 10px;
   position: relative
@@ -73,7 +73,7 @@ label {
   z-index: 1; 
 }
 
-.chat-toolbar input {
+.chat-username input {
   border: 1px solid #af8;
   padding-left: 100px;
   background-color: #af8;
