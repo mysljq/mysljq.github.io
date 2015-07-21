@@ -1053,12 +1053,14 @@
 
 		$(function(){
 			$('#start').click(function(){
+				$('#music').append('<embed id="bg_music"  loop=true  volume="60" autostart=true hidden=true src="HeroesWithin.mp3" />');
 				$('#shade').fadeOut(1000,function(){startGame();});
 			});
 		});//初始时点击开始按钮的事件
 
 		$(function(){
 			$('#test').click(function(){
+				$('#music').append('<embed id="bg_music"  loop=true  volume="60" autostart=true hidden=true src="HeroesWithin.mp3" />');
 				$('#shade').fadeOut(1000,function(){testFlag=true;startGame();});
 			});
 		});//初始时点击开始按钮的事件
@@ -1157,6 +1159,10 @@
 				}
 				else{
 					clearInterval(checkloop);
+					Bullets = [];
+					Circles = [];
+					drawCircle();
+					drawBullet();
 					var tempMessage = $('<div class="message">');
 					tempMessage.text("下一波在5秒后");
 					tempMessage.appendTo($(".map"));
@@ -1180,7 +1186,7 @@
 				Tower = [];
 			}
 			$('.HP p').html(HP);
-			if(testFlag) {gold = 1000;testFlag=false;}
+			if(testFlag) {gold = 9999;testFlag=false;}
 			$('.gold p').html(gold);
 			$('.wave p').html(wave+1);
 			initEnemy(nowWave);
@@ -1197,6 +1203,7 @@
 	</script>
 </head>
 <body>
+	<div id="music"></div>
 	<div id="shade">
 		<header>
 			<h1>Defence of Tower Alistar</h1>
