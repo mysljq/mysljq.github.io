@@ -16,7 +16,7 @@
 			[1, 1, 3, 1, 1, 3, 3, 1, 1, 3, 1, 1],
 			[1, 1, 5, 2, 2, 4, 5, 2, 2, 4, 1, 1],
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-		];
+		];//数组记录地图
 		//1：非通道；2：左右；3：上下；4：上左；5：上右；6：下左；7：下右
 
 		var Way=[
@@ -220,7 +220,7 @@
 				position_y:3,
 				enemyid:[-1]
 			}
-		]
+		]//记录怪物通道从起点到终点的位置
 
 		var Waveinfo=[
 			{
@@ -284,7 +284,7 @@
 				speed:0.18,
 				addNextDelay:740
 			}
-		]
+		]//记录每波怪的怪物属性信息
 
 		var Tower_kind=[
 			{
@@ -351,28 +351,30 @@
 					}
 				]
 			}
-		]
+		]//记录各种塔以及不同等级的伤害，建造价格等信息
 
-		var Tower=[];
-		var Enemy=[];
-		var Bullets=[];
-		var Circles=[];
+		var Tower=[];//记录现在已经修建的塔的坐标
+		var Enemy=[];//记录当前波数的怪的信息
+		var Bullets=[]; //记录当前显示在地图上的所有子弹的坐标，方便重画调用
+		var Circles=[];//记录当前显示在地图上的圆形弹道的位置
 
-		var wave = 0;
-		var HP = 5;
-		var gold = 40;
-		var num_enemyOnMap = 0;
-		var num_AliveEnemy;
-		var add_tower_kind;
-		var skill_0_price = 40;
-		var skill_1_price = 40;
-		var speedUpFlag = false;
-		var pauseFlag = false;
-		var testFlag = false;
-		var change_tower=false;
-		var change_tower_number;
+		var wave = 0;//记录当前怪物波数，从0开始记录，显示波数时将其加1显示
+		var HP = 5;//当前剩余血量
+		var gold = 40;//当前金钱
+		var num_enemyOnMap = 0;//当前显示在地图上的敌人个数
+		var num_AliveEnemy;//当前存货的敌人数，在后台计算中被在途中的子弹消灭的敌人不算在其中
+		var add_tower_kind;//当前正在添加的塔的种类
+		var skill_0_price = 40;//技能：冰封禁制的金钱消耗
+		var skill_1_price = 40;//技能：集中火力的金钱消耗
+		var speedUpFlag = false;//防御塔攻击加速的判定flag
+		var pauseFlag = false;//暂停状态flag
+		var testFlag = false;//测试模式的flag
+		var change_tower=false;//塔升级和摧毁界面是否开启的判定
+		var change_tower_number;//正在进行防御塔修改的塔的编号
+		var add_tower = false;//判定是否点击了修建防御塔按钮，开启修建模式
 
 		function drawMap(){
+			//遍历Map数组
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0;  j< 12; j++) {
 					var block_top = i*80,
@@ -381,46 +383,20 @@
 						var str='<li class="block_1" style="top:'+block_top+'px;left:'+block_left+'px"></li>';
 						var blockdiv = $(str);
 						blockdiv.appendTo('.blocks');
-					}else if(Map[i][j] == 2){
-						var str='<li class="block_2" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_2.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 3){
-						var str='<li class="block_3" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_3.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');
-					}else if(Map[i][j] == 4){
-						var str='<li class="block_4" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_4.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 5){
-						var str='<li class="block_5" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_5.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 6){
-						var str='<li class="block_6" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_6.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 7){
-						var str='<li class="block_7" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_7.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 8){
-						var str='<li class="block_8" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_8.png" style="width:80px"></li>';
-						var blockdiv = $(str);
-						blockdiv.appendTo('.blocks');		
-					}else if(Map[i][j] == 9){
-						var str='<li class="block_9" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_9.png" style="width:80px"></li>';
+					}else{
+						var str='<li class="block_'+ Map[i][j] +'" style="top:'+block_top+'px;left:'+block_left+'px"><img src="image/road_'+ Map[i][j] +'.png" style="width:80px"></li>';
 						var blockdiv = $(str);
 						blockdiv.appendTo('.blocks');		
 					}
 				}
 			}
-		}//地图的绘制
+		}//根据Map数组的不同赋值进行贴图，绘制地图
 
-		var add_tower = false;
+		
 		function addTower(){
+			//当建塔状态开启时，进行下一步判断
 			if (add_tower == true) {
+				//如果修建该种类塔金钱足够进入下一步判定，否则给出金钱不足的提示
 				if (gold >= Tower_kind[add_tower_kind].level[0].price) {
 					var objTop = $(".map").css("top");//对象x位置
 					var objLeft = $(".map").css("left");//对象y位置
@@ -443,6 +419,7 @@
 						}
 					}
 
+					//将新建的塔的种类，坐标，等级存储到Tower数组里，并声明了Tower中的攻击范围为一数组
 					var len = Tower.length;
 					Tower[len] = new Object();
 					Tower[len].kind = add_tower_kind;
@@ -450,14 +427,15 @@
 					Tower[len].position_x = objX;
 					Tower[len].position_y = objY;
 					Tower[len].attackrange = new Array(); 
-					add_tower = false;
-					gold -= Tower_kind[add_tower_kind].level[0].price;
-					$('.gold p').html(gold);
-					$('.map').css("cursor","auto");
+					add_tower = false;//关闭箭塔状态
+					gold -= Tower_kind[add_tower_kind].level[0].price;//扣除修建塔的费用
+					$('.gold p').html(gold);//更新当前金钱显示
+					$('.map').css("cursor","auto");//将鼠标样式置回初始样式
 
 					//该塔能攻击到的格子数量
 					var num_attackpoint = 0;
 
+					//根据不同的塔的种类，计算该类塔的攻击范围，再将攻击范围内的道路编号赋值到Tower[len].attackrange中，编号从大到小排列
 					if (Tower[len].kind == 1) {
 						var x_start = (Tower[len].position_x-2)>0? (Tower[len].position_x-2):0,
 						x_final = (Tower[len].position_x+2)<11? (Tower[len].position_x + 2):11,
@@ -518,11 +496,16 @@
 							}
 						}
 					}
+
+					//将新加入的防御塔绘制到地图上
 					drawTower(len);
 				}else{
+					//金钱不足时提示
 					remindNotEnoughGold();
 				}						
 			}else{
+				//当并没用开启修建防御塔状态时，判断是否可以开启升级防御塔
+				//
 				var objTop = $(".map").css("top");//对象x位置
 				var objLeft = $(".map").css("left");//对象y位置
 					 
@@ -531,14 +514,14 @@
 				//计算点击的相对位置
 				var objX = parseInt((mouseX-parseInt(objLeft))/80);
 				var objY = parseInt((mouseY-parseInt(objTop))/80);
-				//判定点击位置是否有防御塔，如果有，则显示修改塔的UI界面
+				//判定点击位置是否有防御塔，如果有，则显示升级和摧毁塔的UI界面
 				for (var i = 0; i < Tower.length; i++) {
 					if (Tower[i].position_x == objX && Tower[i].position_y == objY){
 						drawChangeTowerUI(i);
 					}
 				}				
 			}
-		}//添加新塔的函数
+		}//添加新塔的函数，同时也是显示塔信息，升级摧毁界面的方法
 
 		function drawTower(){
 			var temp = arguments[0];
@@ -667,6 +650,7 @@
 		}//塔发出攻击动作，按塔的种类有不同操作，普通塔预判其攻击对象，添加子弹对象，范围塔添加圆圈的对象，直线塔直接结算伤害并且调用绘制
 
 		function initEnemy(wave){
+			//获取Waveinfo数组中的数据，初始化敌人
 			num_enemyOnMap = 0;
 			num_AliveEnemy = Waveinfo[wave].number;
 			for(var i = 0; i < Waveinfo[wave].number; i++){
@@ -758,6 +742,7 @@
 				"style":"position:absolute;left:"+(absoluteX+8)+"px;top:"+(absoluteY+10)+"px"
 			});
 			$('<div style="height:6px;width:'+life_length+'px;position:absolute;top:-6px;left:0px;background:red;border-radius:3px;">').appendTo(enemydiv);
+			//判定该敌人是否有冰冻减速状态，使用不同的图片
 			if(Enemy[i].frozenbuff == false){
 				$('<img style="width:64px;height:51.2px;"/>').attr({"src":"image/icon/enemy1.png"}).appendTo(enemydiv);
 			}
@@ -790,7 +775,7 @@
 				}
 			}
 			drawBullet();
-		}//子弹的移动
+		}//子弹的移动，使得子弹始终追踪目标进行移动
 
 		function drawBullet(){
 			$('.bullets').empty();
@@ -866,7 +851,7 @@
 				});
 			}
 			circlediv.appendTo('.circles');
-		}//单个火圈/减速圈的绘制
+		}//单个火圈/冰冻圈的绘制
 
 		function speedRecover(enemyid){
 			Enemy[enemyid].frozenbuff = false;
@@ -885,12 +870,12 @@
 			hCross.appendTo($('.crosses'));
 			vCross.fadeOut(200,function(){vCross.remove();});
 			hCross.fadeOut(200,function(){hCross.remove();});
-		}//绘制直线型塔的激光
+		}//绘制紫色塔的十字形激光
 
 		function remindNotEnoughGold(){
 			var temp = "#remind_gold";
 			$('<img id="remind_gold" style="opacity:1" src="image/remind_gold.png">').appendTo($('.map'));
-			fadeoutRemind(temp);
+			fadeoutRemind(temp);//淡化提示
 		}//金钱不足的提示
 
 		function fadeoutRemind(){
@@ -902,12 +887,14 @@
 			}else{
 				$(temp).remove();
 			}
-		}//金钱不足提示的动画
+		}//金钱不足提示的淡化效果
 
 		function drawChangeTowerUI(i){
 			if (change_tower == false) {
 				change_tower = true;
 				change_tower_number = i;
+
+				//绘制正在查看的塔的种类图标和等级图标
 				var change_tower_kind = Tower[i].kind;
 				var change_tower_level = Tower[i].level + 1;
 				$('<img class="change_tower_icon" src="image/icon/tower'+change_tower_kind+'.png"/>').appendTo($('.changeTowerUI'));
@@ -916,6 +903,7 @@
 				}
 				$('.changeTowerUI').css('display','block');
 			}else{
+				//如果已经打开一个塔的修改界面，点击地图上其他的塔，可以将显示的界面更新到最新点击的塔
 				closeChangeTowerUI();
 				drawChangeTowerUI(i);
 			}
@@ -939,19 +927,22 @@
 					Tower[change_tower_number].level++;
 					for (var j = 0; j <= Tower[change_tower_number].level; j++) {
 						$($('.showlevel')[j]).attr('src','image/icon/level_current.png');
+						//更新信息显示界面的等级贴图
 					}
 				}else{
+					//提示金钱不足
 					remindNotEnoughGold();
 				}
 			}else{
+				//提示塔已经升级到最高等级
 				remindReachHighestLevel();
 			}
 		}//升级塔，若金钱不足或已经到达最高等级，给出提示
 
 		function deleteTower(){
-			$($('.tower')[change_tower_number]).remove();
-			Tower.splice(change_tower_number, 1);
-			closeChangeTowerUI();
+			$($('.tower')[change_tower_number]).remove();//从绘制的地图中去除摧毁的防御塔
+			Tower.splice(change_tower_number, 1);//从记录防御塔信息的数组中删去摧毁的塔的信息
+			closeChangeTowerUI();//关闭升级塔的界面
 		}//移除防御塔
 
 		function remindReachHighestLevel(){
@@ -968,9 +959,12 @@
 			$('#tower_1').click(function(){
 				if(add_tower == false){
 					add_tower = true
+
+					//开启修建防御塔状态时，鼠标移到地图上时会改变鼠标光标样式为即将修建塔的种类的样式
 					$('.map').css("cursor","url('image/icon/tower1.ico'),auto");
 					add_tower_kind=1;					
 				}else{
+					//再次点击后关闭修建防御塔的状态
 					add_tower=false;
 					$('.map').css("cursor","auto");
 				}
@@ -1294,7 +1288,7 @@
 
 
 	<script type="text/javascript">
-		drawMap();//加载时县绘制地图
+		drawMap();//加载时先绘制地图
 	</script>
 </body>
 </html>
